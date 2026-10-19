@@ -19,7 +19,7 @@ Projeto de portfólio criado para demonstrar competências de QA Manual, API Tes
 | Testes manuais/funcionais | `docs/test-cases.md` |
 | Cenários e casos de teste | `docs/test-cases.md` |
 | API Testing | `tests/api/` |
-| Postman | `postman/customers-api.postman_collection.json` |
+| Postman | `postman/customers _postman_collection.json` |
 | Swagger/OpenAPI | `openapi/openapi.yaml` |
 | Playwright | `tests/ui/` e `tests/api/` |
 | Automação | `playwright.config.js` |
@@ -85,6 +85,7 @@ A collection cobre:
 - POST
 - PUT
 - DELETE
+- CRUD completo
 - cenários negativos
 
 ## 7. Cenário do projeto
@@ -119,15 +120,29 @@ qa-playwright-api-portfolio/
 │   ├── app.js
 │   ├── db.js
 │   └── public/
+│           └── index.html
 ├── database/
 │   └── init.sql
 ├── openapi/
 │   └── openapi.yaml
 ├── postman/
-│   └── customers-api.postman_collection.json
+│   └── customers _postman_collection.json
 ├── tests/
-│   ├── api/
-│   └── ui/
+│   ├──── api/
+│   │       ├── customers.crud.spec.js
+│   │       ├── customers.delete.spec.js
+│   │       ├── customers.get.spec.js
+│   │       ├── customers.post.spec.js
+│   │       └── customers.put.spec.js
+│   ├──── ui/
+│   │       └── customers.spec.js
+│   ├──── integration/
+│   │       └── customers.persistence.spec.js
+│   ├──── fixtures/
+│   │       └── customers.fixtures.js
+│   └──── helpers/ 
+│           ├── customers.js
+│           └── database.js
 ├── docs/
 │   ├── test-cases.md
 │   ├── bug-reports.md
