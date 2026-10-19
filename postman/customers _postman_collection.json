@@ -1,0 +1,2122 @@
+{
+  "info": {
+    "_postman_id": "8a638674-d0cc-4f7f-b7ce-d2b505a5e846",
+    "name": "QA Portfolio - Customers API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "42597231"
+  },
+  "item": [
+    {
+      "name": "Customers - GET",
+      "item": [
+        {
+          "name": "GET - List customers",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json()\r",
+                  "\r",
+                  "pm.test('Status code is 200', function () {\r",
+                  "  pm.response.to.have.status(200)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Response contains customers', function () {\r",
+                  "  pm.expect(json.customers).to.be.an('array')\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Default page is 1', function () {\r",
+                  "  pm.expect(json.page).to.eql(1)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Default limit is 10', function () {\r",
+                  "  pm.expect(json.limit).to.eql(10)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('totalReturned matches customers length', function () {\r",
+                  "  pm.expect(json.totalReturned).to.eql(json.customers.length)\r",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3001/customers?page=1&limit=10&size=Medium",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "customers"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "size",
+                  "value": "Medium"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET - Pagination",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json()\r",
+                  "\r",
+                  "pm.test('Status code is 200', function () {\r",
+                  "  pm.response.to.have.status(200)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Page is 1', function () {\r",
+                  "  pm.expect(json.page).to.eql(1)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Limit is 6', function () {\r",
+                  "  pm.expect(json.limit).to.eql(6)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Returned customers do not exceed limit', function () {\r",
+                  "  pm.expect(json.customers.length).to.be.at.most(6)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('totalReturned matches customers length', function () {\r",
+                  "  pm.expect(json.totalReturned).to.eql(json.customers.length)\r",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3001/customers?page=1&limit=6",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "customers"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "6"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET - Filter by size",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json()\r",
+                  "\r",
+                  "pm.test('Status code is 200', function () {\r",
+                  "  pm.response.to.have.status(200)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('All returned customers have Medium size', function () {\r",
+                  "  json.customers.forEach(customer => {\r",
+                  "    pm.expect(customer.size).to.eql('Medium')\r",
+                  "  })\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('totalReturned matches customers length', function () {\r",
+                  "  pm.expect(json.totalReturned).to.eql(json.customers.length)\r",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3001/customers?size=Medium",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "customers"
+              ],
+              "query": [
+                {
+                  "key": "size",
+                  "value": "Medium"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET - Filter by industry",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json()\r",
+                  "\r",
+                  "pm.test('Status code is 200', function () {\r",
+                  "  pm.response.to.have.status(200)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('All returned customers belong to Technology', function () {\r",
+                  "  json.customers.forEach(customer => {\r",
+                  "    pm.expect(customer.industry).to.eql('Technology')\r",
+                  "  })\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('totalReturned matches customers length', function () {\r",
+                  "  pm.expect(json.totalReturned).to.eql(json.customers.length)\r",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3001/customers?industry=Technology",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "customers"
+              ],
+              "query": [
+                {
+                  "key": "industry",
+                  "value": "Technology"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET - Filter by size + industry",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json()\r",
+                  "\r",
+                  "pm.test('Status code is 200', function () {\r",
+                  "  pm.response.to.have.status(200)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('All customers have Very Large Enterprise size', function () {\r",
+                  "  json.customers.forEach(customer => {\r",
+                  "    pm.expect(customer.size).to.eql('Very Large Enterprise')\r",
+                  "  })\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('All customers belong to Finance', function () {\r",
+                  "  json.customers.forEach(customer => {\r",
+                  "    pm.expect(customer.industry).to.eql('Finance')\r",
+                  "  })\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('totalReturned matches customers length', function () {\r",
+                  "  pm.expect(json.totalReturned).to.eql(json.customers.length)\r",
+                  "})\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3001/customers?size=Very Large Enterprise&industry=Finance",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "customers"
+              ],
+              "query": [
+                {
+                  "key": "size",
+                  "value": "Very Large Enterprise"
+                },
+                {
+                  "key": "industry",
+                  "value": "Finance"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET - Invalid page",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json()\r",
+                  "\r",
+                  "pm.test('Status code is 400', function () {\r",
+                  "  pm.response.to.have.status(400)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Standard error message for incorrect page', function () {\r",
+                  "    pm.expect(json.error).to.eql('page must be an integer greater than or equal to 1')\r",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3001/customers?page=abc",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "customers"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "abc"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET - Invalid limit",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json()\r",
+                  "\r",
+                  "pm.test('Status code is 400', function () {\r",
+                  "  pm.response.to.have.status(400)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Standard error message for incorrect size', function () {\r",
+                  "    pm.expect(json.error).to.eql('limit must be an integer between 1 and 100')\r",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3001/customers?limit=abc",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "customers"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "abc"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET - Invalid size",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json()\r",
+                  "\r",
+                  "pm.test('Status code is 400', function () {\r",
+                  "  pm.response.to.have.status(400)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Standard error message for incorrect size', function () {\r",
+                  "    pm.expect(json.error).to.eql('size must be one of: Small, Medium, Enterprise, Large Enterprise, Very Large Enterprise')\r",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3001/customers?size=0",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "customers"
+              ],
+              "query": [
+                {
+                  "key": "size",
+                  "value": "0"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET - Invalid industry",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json()\r",
+                  "\r",
+                  "pm.test('Status code is 400', function () {\r",
+                  "  pm.response.to.have.status(400)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Standard error message for incorrect Industry', function () {\r",
+                  "  pm.expect(json.error).to.eql(\r",
+                  "    'industry must be one of: Logistics, Retail, Technology, HR, Finance'\r",
+                  "  )\r",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3001/customers?industry=abc",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "customers"
+              ],
+              "query": [
+                {
+                  "key": "industry",
+                  "value": "abc"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET - Client ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json()\r",
+                  "\r",
+                  "pm.test('Status code is 200', function () {\r",
+                  "  pm.response.to.have.status(200)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('ID is equal 1', function () {\r",
+                  "  pm.expect(json.id).to.eql(1)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('The ID field was returned', function () {\r",
+                  "  pm.expect(json).to.have.property('id')\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Validating the customers name', function () {\r",
+                  "    pm.expect(json.name).to.eql('Alpha Logistics')\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Validating the customers email', function () {\r",
+                  "    pm.expect(json.email).to.eql('alpha@demo.com')\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Validating the customers size', function () {\r",
+                  "    pm.expect(json.size).to.eql('Medium')\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Validating the customers industry', function () {\r",
+                  "    pm.expect(json.industry).to.eql('Logistics')\r",
+                  "})\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3001/customers/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "customers",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET - Non-existent ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json()\r",
+                  "\r",
+                  "pm.test('Status code is 404', function () {\r",
+                  "  pm.response.to.have.status(404)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Standard error message for incorrect Client ID', function () {\r",
+                  "  pm.expect(json.error).to.eql(\r",
+                  "    'customer not found'\r",
+                  "  )\r",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3001/customers/83",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "customers",
+                "83"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET - Invalid Client ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json()\r",
+                  "\r",
+                  "pm.test('Status code is 400', function () {\r",
+                  "  pm.response.to.have.status(400)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Standard error message for incorrect Client ID', function () {\r",
+                  "  pm.expect(json.error).to.eql('id must be a positive integer')\r",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3001/customers/abc",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "customers",
+                "abc"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Customers - POST",
+      "item": [
+        {
+          "name": "POST - Create customer",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json()\r",
+                  "const customerId = pm.collectionVariables.get('customerId')\r",
+                  "\r",
+                  "pm.test('Status code is 201', function () {\r",
+                  "  pm.response.to.have.status(201)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Validating the customers name', function () {\r",
+                  "        pm.expect(json.name).to.eql('Postman Customer ID')\r",
+                  "    })\r",
+                  "\r",
+                  "pm.test('Email contains customerId', function () {\r",
+                  "    pm.expect(json.email).to.eql(`postman@${customerId}.com`)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Validating the customers size', function () {\r",
+                  "        pm.expect(json.size).to.eql('Medium')\r",
+                  "    })\r",
+                  "\r",
+                  "pm.test('Validating the customers industry', function () {\r",
+                  "        pm.expect(json.industry).to.eql('Technology')\r",
+                  "    })\r",
+                  "\r",
+                  "\r",
+                  "pm.collectionVariables.set('customerId', json.id)\r",
+                  "pm.collectionVariables.set('customerName', json.name)\r",
+                  "pm.collectionVariables.set('customerEmail', json.email)\r",
+                  "pm.collectionVariables.set('customerSize', json.size)\r",
+                  "pm.collectionVariables.set('customerIndustry', json.industry)"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\":\"Postman Customer ID\",\r\n    \"email\": \"postman@{{customerId}}.com\",\r\n    \"size\": \"Medium\",\r\n    \"industry\":\"Technology\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/customers",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "customers"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST - Existent email",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json()\r",
+                  "\r",
+                  "pm.test('Status code is 409', function () {\r",
+                  "  pm.response.to.have.status(409)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Standard error message for incorrect email', function () {\r",
+                  "        pm.expect(json.error).to.eql('email already exists')\r",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\":\"Postman Customer\",\r\n    \"email\": \"postman-demo@demo123.com\",\r\n    \"size\": \"Medium\",\r\n    \"industry\":\"Technology\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/customers",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "customers"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST - Invalid size",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json()\r",
+                  "\r",
+                  "pm.test('Status code is 400', function () {\r",
+                  "  pm.response.to.have.status(400)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Standard error message for incorrect size or industry', function () {\r",
+                  "        pm.expect(json.error).to.eql('invalid size or industry')\r",
+                  "})\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\":\"Postman Customer\",\r\n    \"email\": \"postman-demo@demo4.com\",\r\n    \"size\": \"xxx\",\r\n    \"industry\":\"Technology\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/customers",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "customers"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST - Invalid industry",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json()\r",
+                  "\r",
+                  "pm.test('Status code is 400', function () {\r",
+                  "  pm.response.to.have.status(400)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Standard error message for incorrect size or industry', function () {\r",
+                  "        pm.expect(json.error).to.eql('invalid size or industry')\r",
+                  "})\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\":\"Postman Customer\",\r\n    \"email\": \"postman-demo@demo4.com\",\r\n    \"size\": \"Medium\",\r\n    \"industry\":\"xxx\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/customers",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "customers"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST -  Without name",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json()\r",
+                  "\r",
+                  "pm.test('Status code is 400', function () {\r",
+                  "  pm.response.to.have.status(400)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Standard error message for absence of data of email, size or industry', function () {\r",
+                  "        pm.expect(json.error).to.eql('name, email, size and industry are required and cannot be empty')\r",
+                  "})\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"postman-demo@demo9.com\",\r\n    \"size\": \"Medium\",\r\n    \"industry\":\"Technology\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/customers",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "customers"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST -  Without email",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json()\r",
+                  "\r",
+                  "pm.test('Status code is 400', function () {\r",
+                  "  pm.response.to.have.status(400)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Standard error message for absence of data of email, size or industry', function () {\r",
+                  "        pm.expect(json.error).to.eql('name, email, size and industry are required and cannot be empty')\r",
+                  "})\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\":\"Postman Customer\",\r\n    \"size\": \"Medium\",\r\n    \"industry\":\"Technology\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/customers",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "customers"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST -  Without size",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json()\r",
+                  "\r",
+                  "pm.test('Status code is 400', function () {\r",
+                  "  pm.response.to.have.status(400)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Standard error message for absence of data of email, size or industry', function () {\r",
+                  "        pm.expect(json.error).to.eql('name, email, size and industry are required and cannot be empty')\r",
+                  "})\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\":\"Postman Customer\",\r\n    \"email\": \"postman-demo@demo9.com\",\r\n    \"industry\":\"Technology\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/customers",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "customers"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST -  Without industry",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json()\r",
+                  "\r",
+                  "pm.test('Status code is 400', function () {\r",
+                  "  pm.response.to.have.status(400)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Standard error message for absence of data of email, size or industry', function () {\r",
+                  "        pm.expect(json.error).to.eql('name, email, size and industry are required and cannot be empty')\r",
+                  "})\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\":\"Postman Customer\",\r\n    \"email\": \"postman-demo@demo9.com\",\r\n    \"size\": \"Medium\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/customers",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "customers"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Customers - PUT",
+      "item": [
+        {
+          "name": "PUT - Update on custumer",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json()\r",
+                  "const customerId = pm.collectionVariables.get('customerId')\r",
+                  "\r",
+                  "pm.test('Status code is 200', function () {\r",
+                  "  pm.response.to.have.status(200)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Validating the customers name updated', function () {\r",
+                  "        pm.expect(json.name).to.eql('Postman Customer Updated')\r",
+                  "    })\r",
+                  "\r",
+                  "pm.test('Email contains customerId updated', function () {\r",
+                  "    pm.expect(json.email).to.eql(`postman-updated@${customerId}.com`)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Validating the customers size updated', function () {\r",
+                  "        pm.expect(json.size).to.eql('Enterprise')\r",
+                  "    })\r",
+                  "\r",
+                  "pm.test('Validating the customers industry updated', function () {\r",
+                  "        pm.expect(json.industry).to.eql('Technology')\r",
+                  "    })\r",
+                  "\r",
+                  "pm.collectionVariables.set('customerId', json.id)\r",
+                  "pm.collectionVariables.set('customerName', json.name)\r",
+                  "pm.collectionVariables.set('customerEmail', json.email)\r",
+                  "pm.collectionVariables.set('customerSize', json.size)\r",
+                  "pm.collectionVariables.set('customerIndustry', json.industry)"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Postman Customer Updated\",\r\n  \"email\": \"postman-updated@{{customerId}}.com\",\r\n  \"size\": \"Enterprise\",\r\n  \"industry\": \"Technology\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/customers/{{customerId}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "customers",
+                "{{customerId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT -  Non-existent ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json()\r",
+                  "\r",
+                  "pm.test('Status code is 404', function () {\r",
+                  "  pm.response.to.have.status(404)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Invalid ID', function () {\r",
+                  "        pm.expect(json.error).to.eql('customer not found')\r",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Postman Customer Updated\",\r\n  \"email\": \"postman-updated@teste.com\",\r\n  \"size\": \"Enterprise\",\r\n  \"industry\": \"Technology\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/customers/83",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "customers",
+                "83"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT -  Invalid ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json()\r",
+                  "\r",
+                  "pm.test('Status code is 400', function () {\r",
+                  "  pm.response.to.have.status(400)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Invalid ID', function () {\r",
+                  "        pm.expect(json.error).to.eql('id must be a positive integer')\r",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Postman Customer Updated\",\r\n  \"email\": \"postman-updated@teste.com\",\r\n  \"size\": \"Enterprise\",\r\n  \"industry\": \"Technology\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/customers/abc",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "customers",
+                "abc"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT - Invalid size",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json()\r",
+                  "\r",
+                  "pm.test('Status code is 400', function () {\r",
+                  "  pm.response.to.have.status(400)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Standard error message for incorrect size or industry', function () {\r",
+                  "        pm.expect(json.error).to.eql('invalid size or industry')\r",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Postman Customer Updated\",\r\n  \"email\": \"postman-updated@{{customerId}}.com\",\r\n  \"size\": \"xxx\",\r\n  \"industry\": \"Technology\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/customers/{{customerId}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "customers",
+                "{{customerId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT - Invalid industry",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json()\r",
+                  "\r",
+                  "pm.test('Status code is 400', function () {\r",
+                  "  pm.response.to.have.status(400)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Standard error message for incorrect size or industry', function () {\r",
+                  "        pm.expect(json.error).to.eql('invalid size or industry')\r",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Postman Customer Updated\",\r\n  \"email\": \"postman-updated@{{customerId}}.com\",\r\n  \"size\": \"Enterprise\",\r\n  \"industry\": \"xxx\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/customers/{{customerId}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "customers",
+                "{{customerId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT -  Without name",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json()\r",
+                  "\r",
+                  "pm.test('Status code is 400', function () {\r",
+                  "  pm.response.to.have.status(400)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Standard error message for absence of data of email, size or industry', function () {\r",
+                  "        pm.expect(json.error).to.eql('name, email, size and industry are required')\r",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"postman-updated@teste.com\",\r\n  \"size\": \"Enterprise\",\r\n  \"industry\": \"Technology\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/customers/{{customerId}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "customers",
+                "{{customerId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT -  Without email",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json()\r",
+                  "\r",
+                  "pm.test('Status code is 400', function () {\r",
+                  "  pm.response.to.have.status(400)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Standard error message for absence of data of email, size or industry', function () {\r",
+                  "        pm.expect(json.error).to.eql('name, email, size and industry are required')\r",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Postman Customer Updated\",\r\n  \"size\": \"Enterprise\",\r\n  \"industry\": \"Technology\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/customers/{{customerId}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "customers",
+                "{{customerId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT -  Without size",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json()\r",
+                  "\r",
+                  "pm.test('Status code is 400', function () {\r",
+                  "  pm.response.to.have.status(400)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Standard error message for absence of data of email, size or industry', function () {\r",
+                  "        pm.expect(json.error).to.eql('name, email, size and industry are required')\r",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Postman Customer Updated\",\r\n  \"email\": \"postman-updated@teste.com\",\r\n  \"industry\": \"Technology\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/customers/{{customerId}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "customers",
+                "{{customerId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT -  Without industry",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json()\r",
+                  "\r",
+                  "pm.test('Status code is 400', function () {\r",
+                  "  pm.response.to.have.status(400)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Standard error message for absence of data of email, size or industry', function () {\r",
+                  "        pm.expect(json.error).to.eql('name, email, size and industry are required')\r",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Postman Customer Updated\",\r\n  \"email\": \"postman-updated@teste.com\",\r\n  \"size\": \"Enterprise\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/customers/{{customerId}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "customers",
+                "{{customerId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Customers - DELETE",
+      "item": [
+        {
+          "name": "DELETE - Delete custumer ID Copy 2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 204', function () {\r",
+                  "    pm.response.to.have.status(204)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Response body is empty', function () {\r",
+                  "    pm.expect(pm.response.text()).to.eql('')\r",
+                  "})\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3001/customers/{{customerId}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "customers",
+                "{{customerId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE - Excluding non-existent ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json()\r",
+                  "\r",
+                  "pm.test('Status code is 404', function () {\r",
+                  "    pm.response.to.have.status(404)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Delete non-existent ID', function () {\r",
+                  "        pm.expect(json.error).to.eql('customer not found')\r",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3001/customers/83",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "customers",
+                "83"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE - Invalid ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json()\r",
+                  "\r",
+                  "pm.test('Status code is 400', function () {\r",
+                  "  pm.response.to.have.status(400)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Invalid ID', function () {\r",
+                  "        pm.expect(json.error).to.eql('id must be a positive integer')\r",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3001/customers/abc",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "customers",
+                "abc"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Custumers - CRUD",
+      "item": [
+        {
+          "name": "POST - Create customer  ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json()\r",
+                  "const customerId = pm.collectionVariables.get('customerId')\r",
+                  "\r",
+                  "pm.test('Status code is 201', function () {\r",
+                  "  pm.response.to.have.status(201)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Validating the customers name', function () {\r",
+                  "        pm.expect(json.name).to.eql('Postman Customer ID')\r",
+                  "    })\r",
+                  "\r",
+                  "pm.test('Email contains customerId', function () {\r",
+                  "    pm.expect(json.email).to.eql(`postman@${customerId}.com`)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Validating the customers size', function () {\r",
+                  "        pm.expect(json.size).to.eql('Medium')\r",
+                  "    })\r",
+                  "\r",
+                  "pm.test('Validating the customers industry', function () {\r",
+                  "        pm.expect(json.industry).to.eql('Finance')\r",
+                  "    })\r",
+                  "\r",
+                  "pm.collectionVariables.set('customerId', json.id)\r",
+                  "pm.collectionVariables.set('customerName', json.name)\r",
+                  "pm.collectionVariables.set('customerEmail', json.email)\r",
+                  "pm.collectionVariables.set('customerSize', json.size)\r",
+                  "pm.collectionVariables.set('customerIndustry', json.industry)"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\":\"Postman Customer ID\",\r\n    \"email\": \"postman@{{customerId}}.com\",\r\n    \"size\": \"Medium\",\r\n    \"industry\":\"Finance\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/customers",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "customers"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET - Validate the created ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json()\r",
+                  "\r",
+                  "pm.test('Status code is 200', function () {\r",
+                  "  pm.response.to.have.status(200)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('ID matches created customer', function () {\r",
+                  "  pm.expect(json.id).to.eql(\r",
+                  "    Number(pm.collectionVariables.get('customerId')))\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Validating the customers name', function () {\r",
+                  "  pm.expect(json.name).to.eql(\r",
+                  "    String(pm.collectionVariables.get('customerName')))\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Validating the customers email', function () {\r",
+                  "  pm.expect(json.email).to.eql(\r",
+                  "    String(pm.collectionVariables.get('customerEmail')))\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Validating the customers size', function () {\r",
+                  "  pm.expect(json.size).to.eql(\r",
+                  "    String(pm.collectionVariables.get('customerSize')))\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Validating the customers industry', function () {\r",
+                  "  pm.expect(json.industry).to.eql(\r",
+                  "    String(pm.collectionVariables.get('customerIndustry')))\r",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3001/customers/{{customerId}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "customers",
+                "{{customerId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT - Update on custumer ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json()\r",
+                  "const customerId = pm.collectionVariables.get('customerId')\r",
+                  "\r",
+                  "pm.test('Status code is 200', function () {\r",
+                  "  pm.response.to.have.status(200)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Validating the customers name updated', function () {\r",
+                  "        pm.expect(json.name).to.eql('Postman Customer Updated')\r",
+                  "    })\r",
+                  "\r",
+                  "pm.test('Email contains customerId updated', function () {\r",
+                  "    pm.expect(json.email).to.eql(`postman-updated@${customerId}.com`)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Validating the customers size updated', function () {\r",
+                  "        pm.expect(json.size).to.eql('Enterprise')\r",
+                  "    })\r",
+                  "\r",
+                  "pm.test('Validating the customers industry updated', function () {\r",
+                  "        pm.expect(json.industry).to.eql('Technology')\r",
+                  "    })\r",
+                  "\r",
+                  "pm.collectionVariables.set('customerId', json.id)\r",
+                  "pm.collectionVariables.set('customerName', json.name)\r",
+                  "pm.collectionVariables.set('customerEmail', json.email)\r",
+                  "pm.collectionVariables.set('customerSize', json.size)\r",
+                  "pm.collectionVariables.set('customerIndustry', json.industry)"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Postman Customer Updated\",\r\n  \"email\": \"postman-updated@{{customerId}}.com\",\r\n  \"size\": \"Enterprise\",\r\n  \"industry\": \"Technology\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/customers/{{customerId}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "customers",
+                "{{customerId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET - Validate the updated ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json()\r",
+                  "\r",
+                  "pm.test('Status code is 200', function () {\r",
+                  "  pm.response.to.have.status(200)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('ID matches created customer', function () {\r",
+                  "  pm.expect(json.id).to.eql(\r",
+                  "    Number(pm.collectionVariables.get('customerId')))\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Validating the customers name', function () {\r",
+                  "  pm.expect(json.name).to.eql(\r",
+                  "    String(pm.collectionVariables.get('customerName')))\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Validating the customers email', function () {\r",
+                  "  pm.expect(json.email).to.eql(\r",
+                  "    String(pm.collectionVariables.get('customerEmail')))\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Validating the customers size', function () {\r",
+                  "  pm.expect(json.size).to.eql(\r",
+                  "    String(pm.collectionVariables.get('customerSize')))\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Validating the customers industry', function () {\r",
+                  "  pm.expect(json.industry).to.eql(\r",
+                  "    String(pm.collectionVariables.get('customerIndustry')))\r",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3001/customers/{{customerId}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "customers",
+                "{{customerId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE - Delete custumer ID Copy",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 204', function () {\r",
+                  "    pm.response.to.have.status(204)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Response body is empty', function () {\r",
+                  "    pm.expect(pm.response.text()).to.eql('')\r",
+                  "})\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Postman Customer Updated\",\r\n  \"email\": \"postman-updated@{{customerId}}.com\",\r\n  \"size\": \"Enterprise\",\r\n  \"industry\": \"Technology\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/customers/{{customerId}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "customers",
+                "{{customerId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET - Validate the delete ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json()\r",
+                  "\r",
+                  "pm.test('Status code is 404', function () {\r",
+                  "  pm.response.to.have.status(404)\r",
+                  "})\r",
+                  "\r",
+                  "pm.test('Standard error message for the deleted ID', function () {\r",
+                  "    pm.expect(json.error).to.eql('customer not found')\r",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3001/customers/{{customerId}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3001",
+              "path": [
+                "customers",
+                "{{customerId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "customerId",
+      "value": ""
+    },
+    {
+      "key": "customerName",
+      "value": ""
+    },
+    {
+      "key": "customerEmail",
+      "value": ""
+    },
+    {
+      "key": "customerSize",
+      "value": ""
+    },
+    {
+      "key": "customerIndustry",
+      "value": ""
+    }
+  ]
+}

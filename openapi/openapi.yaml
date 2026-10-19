@@ -1,0 +1,118 @@
+openapi: 3.0.3
+info:
+  title: QA Portfolio Customers API
+  version: 1.0.0
+  description: API created for QA testing practice.
+
+servers:
+  - url: http://localhost:3001
+
+paths:
+  /customers:
+    get:
+      summary: List customers
+      parameters:
+        - in: query
+          name: page
+          schema: { type: integer, minimum: 1, default: 1 }
+        - in: query
+          name: limit
+          schema: { type: integer, minimum: 1, maximum: 100, default: 10 }
+        - in: query
+          name: size
+          schema:
+            type: string
+            enum: [Small, Medium, Enterprise, Large Enterprise, Very Large Enterprise]
+        - in: query
+          name: industry
+          schema:
+            type: string
+            enum: [Logistics, Retail, Technology, HR, Finance]
+      responses:
+        '200':
+          description: Successful response
+        '400':
+          description: Invalid parameter
+
+    post:
+      summary: Create customer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerInput'
+      responses:
+        '201':
+          description: Customer created
+        '400':
+          description: Invalid payload
+        '409':
+          description: Email already exists
+
+  /customers/{id}:
+    get:
+      summary: Get customer by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer, minimum: 1 }
+      responses:
+        '200':
+          description: Customer found
+        '400':
+          description: Invalid ID
+        '404':
+          description: Customer not found
+
+    put:
+      summary: Update customer
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer, minimum: 1 }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerInput'
+      responses:
+        '200':
+          description: Customer updated
+        '400':
+          description: Invalid request
+        '404':
+          description: Customer not found
+
+    delete:
+      summary: Delete customer
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer, minimum: 1 }
+      responses:
+        '204':
+          description: Customer deleted
+        '400':
+          description: Invalid ID
+        '404':
+          description: Customer not found
+
+components:
+  schemas:
+    CustomerInput:
+      type: object
+      required: [name, email, size, industry]
+      properties:
+        name: { type: string }
+        email: { type: string, format: email }
+        size:
+          type: string
+          enum: [Small, Medium, Enterprise, Large Enterprise, Very Large Enterprise]
+        industry:
+          type: string
+          enum: [Logistics, Retail, Technology, HR, Finance]

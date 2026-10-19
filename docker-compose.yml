@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:16
+    container_name: qa_portfolio_postgres
+    environment:
+      POSTGRES_DB: qa_portfolio
+      POSTGRES_USER: qa_user
+      POSTGRES_PASSWORD: 'qa_password'
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  postgres_data:
