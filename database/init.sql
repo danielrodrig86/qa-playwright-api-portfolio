@@ -12,7 +12,7 @@ INSERT INTO customers (name, email, size, industry) VALUES
 ('Beta Retail', 'beta@demo.com', 'Enterprise', 'Retail'),
 ('Gamma Tech', 'gamma@demo.com', 'Large Enterprise', 'Technology'),
 ('Delta HR', 'delta@demo.com', 'Small', 'HR'),
-('Epsilon Finance', 'epsilon@demo.com', 'Very Large Enterprise', 'Finance'),
+('Epsilon Finance', 'epsilon@demo.com', 'Large Enterprise', 'Finance'),
 ('Nova Logistics', 'nova@demo.com', 'Small', 'Logistics'),
 ('Orion Retail', 'orion@demo.com', 'Medium', 'Retail'),
 ('Pixel Technology', 'pixel@demo.com', 'Enterprise', 'Technology'),
