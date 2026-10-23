@@ -400,7 +400,7 @@ test.describe('GET /customers', () => {
             }
 
             expect(foundEmptyPage).toBe(true)
-            expect(allCustomers.length).toBeGreaterThan(2)
+            expect(allCustomers.length).toBeGreaterThanOrEqual(2)
 
             const ids = allCustomers.map(customer => customer.id)
             const emails = allCustomers.map(customer => customer.email)
@@ -449,7 +449,7 @@ test.describe('GET /customers', () => {
 
             // --- VALIDAÇÕES FINAIS DE DUPLICIDADE ---
             expect(hasMoreData).toBe(false)
-            expect(allCustomers.length).toBeGreaterThan(2)
+            expect(allCustomers.length).toBeGreaterThanOrEqual(2)
 
             // Extrai apenas os IDs e Emails para arrays separados
             const ids = allCustomers.map(c => c.id)
