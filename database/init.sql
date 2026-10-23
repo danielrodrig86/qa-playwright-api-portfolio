@@ -19,4 +19,5 @@ INSERT INTO customers (name, email, size, industry) VALUES
 ('People HR', 'people@demo.com', 'Medium', 'HR'),
 ('Capital Finance', 'capital@demo.com', 'Large Enterprise', 'Finance'),
 ('Road Logistics', 'road@demo.com', 'Enterprise', 'Logistics'),
-('Market Retail', 'market@demo.com', 'Small', 'Retail');
+('Market Retail', 'market@demo.com', 'Small', 'Retail'),
+('TechTudo', 'tech@demo.com', 'Very Large Enterprise', 'HR');
