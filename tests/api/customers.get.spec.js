@@ -368,14 +368,14 @@ test.describe('GET /customers', () => {
         test('returns unique IDs and emails across pages', async ({ request }) => {
             let page = 1
             let foundEmptyPage = false
-            const maxSafetyLimit = 50
+            const maxSafetyLimit = 15
             const allCustomers = []
 
             while (page <= maxSafetyLimit) {
                 const response = await getCustomers(request, {
                     page,
-                    limit: 2,
-                    industry: 'Technology'
+                    limit: 20,
+                    industry: 'Finance'
                 })
 
                 expect(response.status).toBe(200)
@@ -383,7 +383,7 @@ test.describe('GET /customers', () => {
                 const data = response.data
 
                 expect(data.page).toBe(page)
-                expect(data.limit).toBe(2)
+                expect(data.limit).toBe(20)
                 expect(data.totalReturned).toBe(data.customers.length)
 
                 if (data.customers.length === 0) {
@@ -392,7 +392,7 @@ test.describe('GET /customers', () => {
                 }
 
                 for (const customer of data.customers) {
-                    expect(customer.industry).toBe('Technology')
+                    expect(customer.industry).toBe('Finance')
                     allCustomers.push(customer)
                 }
 
@@ -412,21 +412,21 @@ test.describe('GET /customers', () => {
         test('Inconsistent data across pages - Unique IDs and Emails', async ({ request }) => {
             let page = 1
             let hasMoreData = true
-            const maxSafetyLimit = 3
+            const maxSafetyLimit = 10
             const allCustomers = [] // Array para acumular os registros de todas as páginas
 
             while (hasMoreData && page <= maxSafetyLimit) {
                 const response = await getCustomers(request, {
                     page: page,
-                    limit: 2,
-                    industry: 'Technology'
+                    limit: 20,
+                    industry: 'Finance'
                 })
 
                 expect(response.status).toBe(200) // Lembre-se do parêntese se for método do Playwright
                 const data = response.data
 
                 expect(data.page).toBe(page)
-                expect(data.limit).toBe(2)
+                expect(data.limit).toBe(20)
                 expect(data.totalReturned).toBe(data.customers.length)
 
                 // Verifica se existem clientes na resposta
@@ -434,7 +434,7 @@ test.describe('GET /customers', () => {
                     
                     for (const customer of data.customers) {
                         // Validações por item (ajustadas para a estrutura correta do JSON)
-                        expect(customer.industry).toBe('Technology')
+                        expect(customer.industry).toBe('Finance')
 
                         // Salva o id e email no array acumulador
                         allCustomers.push(customer)
